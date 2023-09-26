@@ -34,6 +34,7 @@ void vClockct(void *pvParameters);
 void vUserInt(void *pvParameters);
 
 TaskHandle_t UserInt;
+EventGroupHandle_t xButtonEvent;
 
 	uint8_t seconds = 0;
 	uint8_t minutes = 0;
@@ -55,6 +56,7 @@ int main(void)
 	xTaskCreate(vButtonTask, (const char *) "btTask", configMINIMAL_STACK_SIZE, NULL, 3, NULL);
 	xTaskCreate(vClockct, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
 	xTaskCreate(vUserInt, (const char *) "UserInt", configMINIMAL_STACK_SIZE, NULL, 2, UserInt);
+	xButtonEvent = xEventGroupCreate;
 
 	vDisplayClear();
 	vDisplayWriteStringAtPos(0,0,"FreeRTOS 10.0.1");
