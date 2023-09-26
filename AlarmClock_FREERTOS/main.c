@@ -32,6 +32,9 @@ extern void vApplicationIdleHook( void );
 void vButtonTask(void *pvParameters);
 void vClockct(void *pvParameters);
 
+	uint8_t seconds = 0;
+	uint8_t minutes = 0;
+	uint8_t hours = 0;
 
 void vApplicationIdleHook( void )
 {	
@@ -40,9 +43,7 @@ void vApplicationIdleHook( void )
 
 int main(void)
 {
-	uint8_t seconds = 0;
-	uint8_t minutes = 0;
-	uint8_t hours = 0;
+
     resetReason_t reason = getResetReason();
 
 	vInitClock();
@@ -63,7 +64,27 @@ void vClockct(void *pvParameters){
 	
 	(void) pvParameters;
 	
-	vTaskDelay((1000/BUTTON_UPDATE_FREQUENCY_HZ)/portTICK_RATE_MS);
+	for (;;)
+	{
+		seconds++;
+		
+		if (seconds == 60)
+		{
+			minutes++;
+			seconds = 0;
+		}
+		if (minutes == 60){
+			hours++;
+			minutes = 0;
+		}
+		if (hours == 24)
+		{
+			hours = 0;
+		}
+		
+		
+		vTaskDelay((1000/BUTTON_UPDATE_FREQUENCY_HZ)/portTICK_RATE_MS);
+	}
 }
 
 void vButtonTask(void *pvParameters){
@@ -92,6 +113,4 @@ void vButtonTask(void *pvParameters){
 		}
 		vTaskDelay((1000/BUTTON_UPDATE_FREQUENCY_HZ)/portTICK_RATE_MS);
 	}
-	
-	
 }
