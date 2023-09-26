@@ -126,12 +126,15 @@ void vButtonTask(void *pvParameters){
 		}
 		if (getButtonPress(BUTTON2) == SHORT_PRESSED)
 		{
+			eventbitbutton = xEventGroupSetBits(xButtonEvent,2);
 		}
 		if (getButtonPress(BUTTON3) == SHORT_PRESSED)
 		{
+			eventbitbutton = xEventGroupSetBits(xButtonEvent,3);
 		}
 		if (getButtonPress(BUTTON4) == SHORT_PRESSED)
 		{
+			eventbitbutton = xEventGroupSetBits(xButtonEvent,4);
 		}
 		vTaskDelay((1000/BUTTON_UPDATE_FREQUENCY_HZ)/portTICK_RATE_MS);
 	}
