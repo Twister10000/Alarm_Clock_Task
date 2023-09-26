@@ -53,7 +53,7 @@ int main(void)
 	vInitDisplay();
 	
 	xTaskCreate(vButtonTask, (const char *) "btTask", configMINIMAL_STACK_SIZE, NULL, 3, NULL);
-	xTaskCreate(vButtonTask, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
+	xTaskCreate(vClockct, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
 	xTaskCreate(vUserInt, (const char *) "UserInt", configMINIMAL_STACK_SIZE, NULL, 2, UserInt);
 
 	vDisplayClear();
