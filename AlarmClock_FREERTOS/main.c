@@ -71,6 +71,8 @@ void vUserInt(void *pvParamters){
 	
 	for (;;)
 	{
+		vDisplayClear();
+		vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
 		vTaskDelay(200/portTICK_RATE_MS);
 	}
 }
