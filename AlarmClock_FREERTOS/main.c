@@ -77,8 +77,14 @@ void vUserInt(void *pvParamters){
 	
 	for (;;)
 	{
-
-		
+		switch(eventbitbutton){
+			case 4:
+				
+					vDisplayClear();
+					vDisplayWriteStringAtPos(0,0,"Option 4");
+					eventbitbutton = xEventGroupClearBits(xButtonEvent,4);
+					break;
+		}
 		vDisplayClear();
 		vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
 		vDisplayWriteStringAtPos(1,2,"Time: %d:%d:%d",hours,minutes,seconds);
