@@ -31,6 +31,9 @@
 extern void vApplicationIdleHook( void );
 void vButtonTask(void *pvParameters);
 void vClockct(void *pvParameters);
+void vUserInt(void *pvParameters);
+
+TaskHandle_t UserInt;
 
 	uint8_t seconds = 0;
 	uint8_t minutes = 0;
@@ -51,6 +54,7 @@ int main(void)
 	
 	xTaskCreate(vButtonTask, (const char *) "btTask", configMINIMAL_STACK_SIZE, NULL, 3, NULL);
 	xTaskCreate(vButtonTask, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
+	xTaskCreate(vUserInt, (const char *) "UserInt", configMINIMAL_STACK_SIZE, NULL, 2, UserInt);
 
 	vDisplayClear();
 	vDisplayWriteStringAtPos(0,0,"FreeRTOS 10.0.1");
@@ -60,6 +64,17 @@ int main(void)
 	vTaskStartScheduler();
 	return 0;
 }
+void vUserInt(void *pvParamters){
+	
+	(void) pvParamters;
+	
+	
+	for (;;)
+	{
+		vTaskDelay(200/portTICK_RATE_MS);
+	}
+}
+
 void vClockct(void *pvParameters){
 	
 	(void) pvParameters;
@@ -81,9 +96,7 @@ void vClockct(void *pvParameters){
 		{
 			hours = 0;
 		}
-		
-		
-		vTaskDelay((1000/BUTTON_UPDATE_FREQUENCY_HZ)/portTICK_RATE_MS);
+		vTaskDelay(1000/portTICK_RATE_MS);
 	}
 }
 
