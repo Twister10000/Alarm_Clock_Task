@@ -27,6 +27,9 @@
 #include "NHD0420Driver.h"
 #include "ButtonHandler.h"
 
+#define BIT_0 (1 << 0)
+#define BIT_1 (1 << 1)
+#define BIT_2 (1 << 2)
 
 extern void vApplicationIdleHook( void );
 void vButtonTask(void *pvParameters);
@@ -35,6 +38,7 @@ void vUserInt(void *pvParameters);
 
 TaskHandle_t UserInt;
 EventGroupHandle_t xButtonEvent;
+EventBits_t eventbitbutton;
 
 	uint8_t seconds = 0;
 	uint8_t minutes = 0;
@@ -56,7 +60,7 @@ int main(void)
 	xTaskCreate(vButtonTask, (const char *) "btTask", configMINIMAL_STACK_SIZE, NULL, 3, NULL);
 	xTaskCreate(vClockct, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
 	xTaskCreate(vUserInt, (const char *) "UserInt", configMINIMAL_STACK_SIZE, NULL, 2, UserInt);
-	xButtonEvent = xEventGroupCreate;
+	xButtonEvent = xEventGroupCreate();
 
 	vDisplayClear();
 	vDisplayWriteStringAtPos(0,0,"FreeRTOS 10.0.1");
@@ -73,6 +77,8 @@ void vUserInt(void *pvParamters){
 	
 	for (;;)
 	{
+
+		
 		vDisplayClear();
 		vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
 		vDisplayWriteStringAtPos(1,2,"Time: %d:%d:%d",hours,minutes,seconds);
@@ -112,22 +118,20 @@ void vButtonTask(void *pvParameters){
 	
 	for (;;)
 	{
-		
+		updateButtons();
+			
 		if(getButtonPress(BUTTON1) == SHORT_PRESSED){
 			
-			
+			eventbitbutton = xEventGroupSetBits(xButtonEvent, 1);
 		}
 		if (getButtonPress(BUTTON2) == SHORT_PRESSED)
 		{
-			
 		}
 		if (getButtonPress(BUTTON3) == SHORT_PRESSED)
 		{
-			
 		}
 		if (getButtonPress(BUTTON4) == SHORT_PRESSED)
 		{
-			
 		}
 		vTaskDelay((1000/BUTTON_UPDATE_FREQUENCY_HZ)/portTICK_RATE_MS);
 	}
