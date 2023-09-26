@@ -40,6 +40,9 @@ void vApplicationIdleHook( void )
 
 int main(void)
 {
+	uint8_t seconds = 0;
+	uint8_t minutes = 0;
+	uint8_t hours = 0;
     resetReason_t reason = getResetReason();
 
 	vInitClock();
