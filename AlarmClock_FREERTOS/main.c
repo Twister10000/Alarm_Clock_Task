@@ -30,8 +30,8 @@
 
 extern void vApplicationIdleHook( void );
 void vButtonTask(void *pvParameters);
+void vClockct(void *pvParameters);
 
-TaskHandle_t ledTask;
 
 void vApplicationIdleHook( void )
 {	
@@ -49,6 +49,7 @@ int main(void)
 	vInitDisplay();
 	
 	xTaskCreate(vButtonTask, (const char *) "btTask", configMINIMAL_STACK_SIZE, NULL, 3, NULL);
+	xTaskCreate(vButtonTask, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
 
 	vDisplayClear();
 	vDisplayWriteStringAtPos(0,0,"FreeRTOS 10.0.1");
@@ -58,6 +59,12 @@ int main(void)
 	vTaskStartScheduler();
 	return 0;
 }
+void vClockct(void *pvParameters){
+	
+	(void) pvParameters;
+	
+}
+
 void vButtonTask(void *pvParameters){
 	
 	(void) pvParameters;
