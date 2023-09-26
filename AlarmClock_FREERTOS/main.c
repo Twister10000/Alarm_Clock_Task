@@ -63,6 +63,7 @@ void vClockct(void *pvParameters){
 	
 	(void) pvParameters;
 	
+	vTaskDelay((1000/BUTTON_UPDATE_FREQUENCY_HZ)/portTICK_RATE_MS);
 }
 
 void vButtonTask(void *pvParameters){
