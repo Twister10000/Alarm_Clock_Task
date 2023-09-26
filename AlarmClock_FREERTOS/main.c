@@ -73,6 +73,7 @@ void vUserInt(void *pvParamters){
 	{
 		vDisplayClear();
 		vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
+		vDisplayWriteStringAtPos(1,2,"Time: %d:%d:%d",hours,minutes,seconds);
 		vTaskDelay(200/portTICK_RATE_MS);
 	}
 }
