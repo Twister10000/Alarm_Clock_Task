@@ -85,25 +85,23 @@ void vUserInt(void *pvParamters){
 					vDisplayWriteStringAtPos(0,0,"Option 8");
 					eventbitbutton = xEventGroupClearBits(xButtonEvent,8);
 					break;
-				
+					
 				case 1:
-					UIMODE = 1;
+					UIMODE = 0;
 					eventbitbutton = xEventGroupClearBits(xButtonEvent,1);
-					break;
+
 			}
-		if (UIMODE == 1)
-		{
-			vDisplayClear();
-			vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
-			vDisplayWriteStringAtPos(1,2,"Time: %d:%d:%d",hours,minutes,seconds);
-		}
 		if (UIMODE == 8)
 		{
 			vDisplayClear();
 			vDisplayWriteStringAtPos(0,0,"Time Settings");
 			
 		}
-
+		else{
+			vDisplayClear();
+			vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
+			vDisplayWriteStringAtPos(1,2,"Time: %d:%d:%d",hours,minutes,seconds);
+		}
 		vTaskDelay(200/portTICK_RATE_MS);
 	}
 }
