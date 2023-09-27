@@ -73,22 +73,35 @@ int main(void)
 void vUserInt(void *pvParamters){
 	
 	(void) pvParamters;
-	
+	uint8_t UIMODE = 0;
 	
 	for (;;)
-	{
-		switch(eventbitbutton){
-			case 4:
-				vDisplayClear();
-				vDisplayWriteStringAtPos(0,0,"Option 4");
-				eventbitbutton = xEventGroupClearBits(xButtonEvent,4);
-				break;
+	{		
 			
-			case 0:
-				vDisplayClear();
-				vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
-				vDisplayWriteStringAtPos(1,2,"Time: %d:%d:%d",hours,minutes,seconds);
-				break;
+			switch(eventbitbutton){
+				
+				case 8:
+					UIMODE = 8;
+					vDisplayWriteStringAtPos(0,0,"Option 8");
+					eventbitbutton = xEventGroupClearBits(xButtonEvent,8);
+					break;
+				
+				case 1:
+					UIMODE = 1;
+					eventbitbutton = xEventGroupClearBits(xButtonEvent,1);
+					break;
+			}
+		if (UIMODE == 1)
+		{
+			vDisplayClear();
+			vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
+			vDisplayWriteStringAtPos(1,2,"Time: %d:%d:%d",hours,minutes,seconds);
+		}
+		if (UIMODE == 8)
+		{
+			vDisplayClear();
+			vDisplayWriteStringAtPos(0,0,"Time Settings");
+			
 		}
 
 		vTaskDelay(200/portTICK_RATE_MS);
@@ -144,6 +157,10 @@ void vButtonTask(void *pvParameters){
 		if (getButtonPress(BUTTON4) == SHORT_PRESSED)
 		{
 			eventbitbutton = xEventGroupSetBits(xButtonEvent,4);
+		}
+		if (getButtonPress(BUTTON4) == LONG_PRESSED)
+		{
+			eventbitbutton = xEventGroupSetBits(xButtonEvent,8);	
 		}
 		vTaskDelay((1000/BUTTON_UPDATE_FREQUENCY_HZ)/portTICK_RATE_MS);
 	}
