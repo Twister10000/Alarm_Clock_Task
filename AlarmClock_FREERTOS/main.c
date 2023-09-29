@@ -80,6 +80,10 @@ void vUserInt(void *pvParamters){
 			
 			switch(eventbitbutton){
 				
+				case 1:
+					UIMODE = 0;
+					eventbitbutton = xEventGroupClearBits(xButtonEvent,1);
+					break;
 				case 2:
 					eventbitbutton = xEventGroupClearBits(xButtonEvent,2);
 					break;
@@ -94,11 +98,6 @@ void vUserInt(void *pvParamters){
 					vDisplayWriteStringAtPos(0,0,"Option 8");
 					eventbitbutton = xEventGroupClearBits(xButtonEvent,44);
 					break;
-					
-				case 1:
-					UIMODE = 0;
-					eventbitbutton = xEventGroupClearBits(xButtonEvent,1);
-
 			}
 		if (UIMODE == 8)
 		{
