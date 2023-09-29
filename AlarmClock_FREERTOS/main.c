@@ -144,7 +144,7 @@ void vUserInt(void *pvParamters){
 			//vTaskSuspend(Clockct);
 			if (s_button1 == true)
 			{
-				UIMODE == 0;
+				UIMODE = 0;
 			}
 			if (s_button2 == true)
 			{
@@ -164,6 +164,14 @@ void vUserInt(void *pvParamters){
 			if (s_button2 == true)
 			{
 				Alarm = Alarm*-1;
+			}
+			if (l_button3 == true)
+			{
+				UIMODE = 7;
+			}
+			if (l_button4 == true)
+			{	
+				UIMODE = 8;
 			}
 			switch(Alarm){
 				case 1:
