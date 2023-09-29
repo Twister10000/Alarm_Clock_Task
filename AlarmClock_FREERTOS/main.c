@@ -237,6 +237,10 @@ void vButtonTask(void *pvParameters){
 		{
 			eventbitbutton = xEventGroupSetBits(xButtonEvent,3);
 		}
+		if (getButtonPress(BUTTON3) == LONG_PRESSED)
+		{
+			eventbitbutton = xEventGroupSetBits(xButtonEvent,33);
+		}
 		if (getButtonPress(BUTTON4) == SHORT_PRESSED)
 		{
 			eventbitbutton = xEventGroupSetBits(xButtonEvent,4);
