@@ -1,8 +1,8 @@
 /*
  * AlarmClock_FREERTOS.c
  *
- * Created: 20.03.2018 18:32:07
- * Author : chaos
+ * Created: 29.09.2023
+ * Author : Twister10000
  */ 
 
 //#include <avr/io.h>
@@ -43,6 +43,10 @@ EventBits_t eventbitbutton;
 	uint8_t seconds = 0;
 	uint8_t minutes = 0;
 	uint8_t hours = 0;
+	
+	uint8_t a_seconds = 0;
+	uint8_t a_minutes = 0;
+	uint8_t a_hours = 0;
 
 void vApplicationIdleHook( void )
 {	
@@ -126,6 +130,7 @@ void vUserInt(void *pvParamters){
 			vDisplayClear();
 			vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
 			vDisplayWriteStringAtPos(1,2,"Time: %d:%d:%d",hours,minutes,seconds);
+			vDisplayWriteStringAtPos(2,1,"Alarm: %d:%d:%d", a_hours,a_minutes,a_seconds);
 		}
 		vTaskDelay(200/portTICK_RATE_MS);
 	}
