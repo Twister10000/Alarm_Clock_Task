@@ -78,6 +78,7 @@ void vUserInt(void *pvParamters){
 	
 	(void) pvParamters;
 	uint8_t UIMODE = 0;
+	int8_t Alarm = 1;
 	
 	for (;;)
 	{		
@@ -90,6 +91,7 @@ void vUserInt(void *pvParamters){
 					eventbitbutton = xEventGroupGetBits(xButtonEvent);
 					break;
 				case 2:
+					Alarm = Alarm*-1;
 					eventbitbutton = xEventGroupClearBits(xButtonEvent,2);
 					eventbitbutton = xEventGroupGetBits(xButtonEvent);
 					break;
@@ -127,10 +129,22 @@ void vUserInt(void *pvParamters){
 			
 		}
 		else{
-			vDisplayClear();
-			vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
-			vDisplayWriteStringAtPos(1,2,"Time: %d:%d:%d",hours,minutes,seconds);
-			vDisplayWriteStringAtPos(2,1,"Alarm: %d:%d:%d", a_hours,a_minutes,a_seconds);
+			switch(Alarm){
+				case 1:
+					vDisplayClear();
+					vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
+					vDisplayWriteStringAtPos(1,2,"Time: %d:%d:%d",hours,minutes,seconds);
+					vDisplayWriteStringAtPos(2,1,"Alarm: %d:%d:%d", a_hours,a_minutes,a_seconds);
+					vDisplayWriteStringAtPos(3,0,"Alarm ist Aktiv");
+					break;
+				case -1:					
+					vDisplayClear();
+					vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
+					vDisplayWriteStringAtPos(1,2,"Time: %d:%d:%d",hours,minutes,seconds);
+					vDisplayWriteStringAtPos(2,1,"Alarm: %d:%d:%d", a_hours,a_minutes,a_seconds);
+					vDisplayWriteStringAtPos(3,0,"Alarm ist Deaktiviert");
+					break;
+			}
 		}
 		vTaskDelay(200/portTICK_RATE_MS);
 	}
