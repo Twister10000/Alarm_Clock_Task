@@ -135,6 +135,30 @@ void vUserInt(void *pvParamters){
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
 				break;
 			}
+		if (UIMODE == 7)
+		{
+			vDisplayClear();
+			vDisplayWriteStringAtPos(0,0,"Alarm Settings");
+			vDisplayWriteStringAtPos(1,1,"Alarm: %s", A_Time);
+			vDisplayWriteStringAtPos(3,0,"S1:B S2:h S3:m S4:s");
+			//vTaskSuspend(Clockct);
+			if (s_button1 == true)
+			{
+				UIMODE = 0;
+			}
+			if (s_button2 == true)
+			{
+				a_hours++;
+			}
+			if (s_button3 == true)
+			{
+				a_minutes++;
+			}
+			if (s_button4 == true)
+			{
+				a_seconds++;
+			}
+		}
 		if (UIMODE == 8){
 			
 			vDisplayClear();
