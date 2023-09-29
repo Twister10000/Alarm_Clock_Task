@@ -80,10 +80,19 @@ void vUserInt(void *pvParamters){
 			
 			switch(eventbitbutton){
 				
-				case 8:
+				case 2:
+					eventbitbutton = xEventGroupClearBits(xButtonEvent,2);
+					break;
+				case 3:
+					eventbitbutton = xEventGroupClearBits(xButtonEvent,3);
+					break;
+				case 4:
+					eventbitbutton = xEventGroupClearBits(xButtonEvent,4);
+					break;
+				case 44:
 					UIMODE = 8;
 					vDisplayWriteStringAtPos(0,0,"Option 8");
-					eventbitbutton = xEventGroupClearBits(xButtonEvent,8);
+					eventbitbutton = xEventGroupClearBits(xButtonEvent,44);
 					break;
 					
 				case 1:
@@ -156,6 +165,10 @@ void vButtonTask(void *pvParameters){
 			
 			eventbitbutton = xEventGroupSetBits(xButtonEvent, 1);
 		}
+		if (getButtonPress(BUTTON1) == LONG_PRESSED)
+		{
+			eventbitbutton = xEventGroupSetBits(xButtonEvent,11);
+		}
 		if (getButtonPress(BUTTON2) == SHORT_PRESSED)
 		{
 			eventbitbutton = xEventGroupSetBits(xButtonEvent,2);
@@ -170,7 +183,7 @@ void vButtonTask(void *pvParameters){
 		}
 		if (getButtonPress(BUTTON4) == LONG_PRESSED)
 		{
-			eventbitbutton = xEventGroupSetBits(xButtonEvent,8);	
+			eventbitbutton = xEventGroupSetBits(xButtonEvent,44);	
 		}
 		vTaskDelay((1000/BUTTON_UPDATE_FREQUENCY_HZ)/portTICK_RATE_MS);
 	}
