@@ -105,6 +105,11 @@ void vUserInt(void *pvParamters){
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,4);
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
 				break;
+			case 11:
+				eventbitbutton = xEventGroupClearBits(xButtonEvent,11);
+				eventbitbutton = xEventGroupGetBits(xButtonEvent);
+				break;
+			
 			case 44:
 				UIMODE = 8;
 				vDisplayWriteStringAtPos(0,0,"Option 8");
