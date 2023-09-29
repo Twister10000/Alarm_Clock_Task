@@ -181,6 +181,11 @@ void vUserInt(void *pvParamters){
 		s_button2 = false;
 		s_button3 = false;
 		s_button4 = false;
+		l_button1 = false;
+		l_button2 = false;
+		l_button3 = false;
+		l_button4 = false;
+		
 	}
 }
 
