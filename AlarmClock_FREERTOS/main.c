@@ -167,9 +167,10 @@ void vUserInt(void *pvParamters){
 				vDisplayWriteStringAtPos(2,0, "S2:-1 S2_Long:-10");
 				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10");
 				
-				if (s_button1)
+				if (s_button1 == true)
 				{
 					hour = false;
+					s_button1 = false;
 				}
 				if (s_button2 == true)
 				{
