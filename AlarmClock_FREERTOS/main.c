@@ -191,6 +191,7 @@ void vUserInt(void *pvParamters){
 		l_button2 = false;
 		l_button3 = false;
 		l_button4 = false;
+		vTaskDelay(200/portTICK_RATE_MS);
 
 		
 	}
