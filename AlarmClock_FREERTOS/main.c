@@ -38,6 +38,7 @@ void vClockct(void *pvParameters);
 void vUserInt(void *pvParameters);
 
 TaskHandle_t UserInt;
+TaskHandle_t Clockct;
 EventGroupHandle_t xButtonEvent;
 EventBits_t eventbitbutton;
 
@@ -69,7 +70,7 @@ int main(void)
 	vInitDisplay();
 	
 	xTaskCreate(vButtonTask, (const char *) "btTask", configMINIMAL_STACK_SIZE, NULL, 3, NULL);
-	xTaskCreate(vClockct, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
+	xTaskCreate(vClockct, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, Clockct);
 	xTaskCreate(vUserInt, (const char *) "UserInt", configMINIMAL_STACK_SIZE, NULL, 2, UserInt);
 	xButtonEvent = xEventGroupCreate();
 
@@ -93,7 +94,7 @@ void vUserInt(void *pvParamters){
 		switch(eventbitbutton){
 				
 			case 1:
-				UIMODE = 0;
+				
 				s_button1 = true;
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,1);
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
@@ -125,13 +126,15 @@ void vUserInt(void *pvParamters){
 				break;
 			}
 		if (UIMODE == 8){
+			
 			vDisplayClear();
 			vDisplayWriteStringAtPos(0,0,"Time Settings");
-			vDisplayWriteStringAtPos(1,1,"Alarm: %s", Time);
+			vDisplayWriteStringAtPos(1,1,"Time: %s", Time);
 			vDisplayWriteStringAtPos(3,0,"S1:B S2:h S3:m S4:s");
+			//vTaskSuspend(Clockct);
 			if (s_button1 == true)
 			{
-				UIMODE ==0;
+				UIMODE == 0;
 			}
 			if (s_button2 == true)
 			{
@@ -145,9 +148,9 @@ void vUserInt(void *pvParamters){
 			{
 				seconds++;
 			}
-			
+			//vTaskResume(Clockct);
 		}
-		else{
+		if(UIMODE == 0){
 			if (s_button2 == true)
 			{
 				Alarm = Alarm*-1;
