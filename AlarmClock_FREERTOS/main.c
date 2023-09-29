@@ -55,6 +55,10 @@ bool s_button1 = false;
 bool s_button2 = false;
 bool s_button3 = false;
 bool s_button4 = false;
+bool l_button1 = false;
+bool l_button2 = false;
+bool l_button3 = false;
+bool l_button4 = false;
 
 void vApplicationIdleHook( void )
 {	
