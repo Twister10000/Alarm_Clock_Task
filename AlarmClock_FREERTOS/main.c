@@ -12,6 +12,7 @@
 #include "clksys_driver.h"
 #include "sleepConfig.h"
 #include "port_driver.h"
+#include <stdio.h>
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -40,13 +41,14 @@ TaskHandle_t UserInt;
 EventGroupHandle_t xButtonEvent;
 EventBits_t eventbitbutton;
 
-	uint8_t seconds = 0;
-	uint8_t minutes = 0;
-	uint8_t hours = 0;
-	
-	uint8_t a_seconds = 0;
-	uint8_t a_minutes = 0;
-	uint8_t a_hours = 0;
+char Time[16];	
+uint8_t seconds = 0;
+uint8_t minutes = 0;
+uint8_t hours = 0;
+char A_Time[16];
+uint8_t a_seconds = 0;
+uint8_t a_minutes = 0;
+uint8_t a_hours = 0;
 
 void vApplicationIdleHook( void )
 {	
@@ -131,16 +133,16 @@ void vUserInt(void *pvParamters){
 				case 1:
 					vDisplayClear();
 					vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
-					vDisplayWriteStringAtPos(1,2,"Time: %d:%d:%d",hours,minutes,seconds);
-					vDisplayWriteStringAtPos(2,1,"Alarm: %d:%d:%d", a_hours,a_minutes,a_seconds);
-					vDisplayWriteStringAtPos(3,0,"Alarm ist Aktiv");
+					vDisplayWriteStringAtPos(1,2,"Time: %s",Time);
+					vDisplayWriteStringAtPos(2,1,"Alarm: %s", A_Time);
+					vDisplayWriteStringAtPos(3,0,"Alarm: Aktiv");
 					break;
 				case -1:					
 					vDisplayClear();
 					vDisplayWriteStringAtPos(0,0,"Alarm-Clock 1.0");
-					vDisplayWriteStringAtPos(1,2,"Time: %d:%d:%d",hours,minutes,seconds);
-					vDisplayWriteStringAtPos(2,1,"Alarm: %d:%d:%d", a_hours,a_minutes,a_seconds);
-					vDisplayWriteStringAtPos(3,0,"Alarm ist Deaktiviert");
+					vDisplayWriteStringAtPos(1,2,"Time: %s",Time);
+					vDisplayWriteStringAtPos(2,1,"Alarm: %s", A_Time);
+					vDisplayWriteStringAtPos(3,0,"Alarm: Deaktiviert");
 					break;
 			}
 		}
@@ -169,6 +171,9 @@ void vClockct(void *pvParameters){
 		{
 			hours = 0;
 		}
+		
+		sprintf(&Time[0], "%.2i:%.2i:%.2i", hours, minutes, seconds);
+		sprintf(&A_Time[0], "%.2i:%.2i:%.2i", a_hours, a_minutes, a_seconds);
 		vTaskDelay(1000/portTICK_RATE_MS);
 	}
 }
