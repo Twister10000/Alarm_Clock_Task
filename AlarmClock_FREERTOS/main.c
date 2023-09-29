@@ -50,6 +50,11 @@ uint8_t a_seconds = 0;
 uint8_t a_minutes = 0;
 uint8_t a_hours = 0;
 
+bool s_button1 = false;
+bool s_button2 = false;
+bool s_button3 = false;
+bool s_button4 = false;
+
 void vApplicationIdleHook( void )
 {	
 	
@@ -89,19 +94,23 @@ void vUserInt(void *pvParamters){
 				
 			case 1:
 				UIMODE = 0;
+				s_button1 = true;
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,1);
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
 				break;
 			case 2:
-				Alarm = Alarm*-1;
+
+				s_button2 = true;
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,2);
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
 				break;
 			case 3:
+				s_button3 = true;
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,3);
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
 				break;
 			case 4:
+				s_button4 = true;
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,4);
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
 				break;
@@ -109,10 +118,8 @@ void vUserInt(void *pvParamters){
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,11);
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
 				break;
-			
 			case 44:
 				UIMODE = 8;
-				vDisplayWriteStringAtPos(0,0,"Option 8");
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,44);
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
 				break;
@@ -120,20 +127,18 @@ void vUserInt(void *pvParamters){
 		if (UIMODE == 8){
 			vDisplayClear();
 			vDisplayWriteStringAtPos(0,0,"Time Settings");
+			vDisplayWriteStringAtPos(1,1,"Alarm: %s", A_Time);
+			if (s_button2 == true)
+			{
+				a_hours++;	
+			}
 			
-			switch(eventbitbutton){
-				
-				case 1:
-					break;
-				case 2:
-					break;
-				case 3:
-					break;
-				case 4:
-					break;						
-			}	
 		}
 		else{
+			if (s_button2 == true)
+			{
+				Alarm = Alarm*-1;
+			}
 			switch(Alarm){
 				case 1:
 					vDisplayClear();
@@ -152,6 +157,10 @@ void vUserInt(void *pvParamters){
 			}
 		}
 		vTaskDelay(200/portTICK_RATE_MS);
+		s_button1 = false;
+		s_button2 = false;
+		s_button3 = false;
+		s_button4 = false;
 	}
 }
 
