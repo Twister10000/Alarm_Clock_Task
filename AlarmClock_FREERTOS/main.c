@@ -98,7 +98,6 @@ void vUserInt(void *pvParamters){
 		switch(eventbitbutton){
 				
 			case 1:
-				
 				s_button1 = true;
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,1);
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
@@ -120,11 +119,18 @@ void vUserInt(void *pvParamters){
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
 				break;
 			case 11:
+				l_button1 = true;
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,11);
+				eventbitbutton = xEventGroupGetBits(xButtonEvent);
+				break;
+			case 33:
+				l_button3 = true;				
+				eventbitbutton = xEventGroupClearBits(xButtonEvent,33);
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
 				break;
 			case 44:
 				UIMODE = 8;
+				l_button4 =	true;
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,44);
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
 				break;
@@ -185,6 +191,7 @@ void vUserInt(void *pvParamters){
 		l_button2 = false;
 		l_button3 = false;
 		l_button4 = false;
+
 		
 	}
 }
