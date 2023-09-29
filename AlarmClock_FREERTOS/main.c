@@ -83,35 +83,34 @@ void vUserInt(void *pvParamters){
 	for (;;)
 	{		
 			
-			switch(eventbitbutton){
+		switch(eventbitbutton){
 				
-				case 1:
-					UIMODE = 0;
-					eventbitbutton = xEventGroupClearBits(xButtonEvent,1);
-					eventbitbutton = xEventGroupGetBits(xButtonEvent);
-					break;
-				case 2:
-					Alarm = Alarm*-1;
-					eventbitbutton = xEventGroupClearBits(xButtonEvent,2);
-					eventbitbutton = xEventGroupGetBits(xButtonEvent);
-					break;
-				case 3:
-					eventbitbutton = xEventGroupClearBits(xButtonEvent,3);
-					eventbitbutton = xEventGroupGetBits(xButtonEvent);
-					break;
-				case 4:
-					eventbitbutton = xEventGroupClearBits(xButtonEvent,4);
-					eventbitbutton = xEventGroupGetBits(xButtonEvent);
-					break;
-				case 44:
-					UIMODE = 8;
-					vDisplayWriteStringAtPos(0,0,"Option 8");
-					eventbitbutton = xEventGroupClearBits(xButtonEvent,44);
-					eventbitbutton = xEventGroupGetBits(xButtonEvent);
-					break;
+			case 1:
+				UIMODE = 0;
+				eventbitbutton = xEventGroupClearBits(xButtonEvent,1);
+				eventbitbutton = xEventGroupGetBits(xButtonEvent);
+				break;
+			case 2:
+				Alarm = Alarm*-1;
+				eventbitbutton = xEventGroupClearBits(xButtonEvent,2);
+				eventbitbutton = xEventGroupGetBits(xButtonEvent);
+				break;
+			case 3:
+				eventbitbutton = xEventGroupClearBits(xButtonEvent,3);
+				eventbitbutton = xEventGroupGetBits(xButtonEvent);
+				break;
+			case 4:
+				eventbitbutton = xEventGroupClearBits(xButtonEvent,4);
+				eventbitbutton = xEventGroupGetBits(xButtonEvent);
+				break;
+			case 44:
+				UIMODE = 8;
+				vDisplayWriteStringAtPos(0,0,"Option 8");
+				eventbitbutton = xEventGroupClearBits(xButtonEvent,44);
+				eventbitbutton = xEventGroupGetBits(xButtonEvent);
+				break;
 			}
-		if (UIMODE == 8)
-		{
+		if (UIMODE == 8){
 			vDisplayClear();
 			vDisplayWriteStringAtPos(0,0,"Time Settings");
 			
@@ -125,8 +124,7 @@ void vUserInt(void *pvParamters){
 					break;
 				case 4:
 					break;						
-			}
-			
+			}	
 		}
 		else{
 			switch(Alarm){
