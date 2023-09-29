@@ -96,6 +96,18 @@ void vUserInt(void *pvParamters){
 			vDisplayClear();
 			vDisplayWriteStringAtPos(0,0,"Time Settings");
 			
+			switch(eventbitbutton){
+				
+				case 1:
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				case 4:
+					break;						
+			}
+			
 		}
 		else{
 			vDisplayClear();
