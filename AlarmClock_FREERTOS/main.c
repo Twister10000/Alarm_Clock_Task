@@ -127,10 +127,23 @@ void vUserInt(void *pvParamters){
 		if (UIMODE == 8){
 			vDisplayClear();
 			vDisplayWriteStringAtPos(0,0,"Time Settings");
-			vDisplayWriteStringAtPos(1,1,"Alarm: %s", A_Time);
+			vDisplayWriteStringAtPos(1,1,"Alarm: %s", Time);
+			vDisplayWriteStringAtPos(3,0,"S1:B S2:h S3:m S4:s");
+			if (s_button1 == true)
+			{
+				UIMODE ==0;
+			}
 			if (s_button2 == true)
 			{
-				a_hours++;	
+				hours++;	
+			}
+			if (s_button3 == true)
+			{
+				minutes++;
+			}
+			if (s_button4 == true)
+			{
+				seconds++;
 			}
 			
 		}
