@@ -172,7 +172,7 @@ void vUserInt(void *pvParamters){
 			if (hour == true)
 			{				
 				vDisplayWriteStringAtPos(2,0, "S2:-1 S2_Long:-10");
-				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10");
+				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10   ");
 				
 				if (s_button1 == true)
 				{
@@ -195,17 +195,74 @@ void vUserInt(void *pvParamters){
 				{
 					a_hours = a_hours+10;
 				}
-			}/*
+				if (a_hours >= 24)
+				{
+					a_hours = 0;
+				}
+			}
 			if (minute == true)
 			{				
 				vDisplayWriteStringAtPos(2,0, "S2:-1 S2_Long:-10");
-				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10");
+				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10   ");
+				
+				if (s_button1 == true)
+				{
+					minute = false;
+					s_button1 = false;
+				}
+				if (s_button2 == true)
+				{
+					a_minutes--;
+				}
+				if (l_button2 == true)
+				{
+					a_minutes = a_minutes-10;
+				}
+				if (s_button3 == true)
+				{
+					a_minutes++;
+				}
+				if (l_button3 == true)
+				{
+					a_minutes = a_minutes+10;
+				}
+				if (a_minutes >= 60)
+				{
+					a_minutes = 0;
+				}
 			}
 			if (second == true)
 			{
 				vDisplayWriteStringAtPos(2,0, "S2:-1 S2_Long:-10");
-				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10");
-			}*/
+				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10   ");				
+				
+				if (s_button1 == true)
+				{
+					second = false;
+					s_button1 = false;
+				}
+				if (s_button2 == true)
+				{
+					a_seconds--;
+				}
+				if (l_button2 == true)
+				{
+					a_seconds = a_seconds-10;
+				}
+				if (s_button3 == true)
+				{
+					a_seconds++;
+				}
+				if (l_button3 == true)
+				{
+					a_seconds = a_seconds+10;
+				}
+				if (a_seconds >= 60)
+				{
+					a_seconds = 0;
+				}
+				
+			}
 		}
 		if (UIMODE == 8){
 			
