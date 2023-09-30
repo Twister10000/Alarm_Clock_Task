@@ -70,8 +70,6 @@ void vApplicationIdleHook( void )
 int main(void)
 {
 
-	PORTF.DIRSET = 0x0F;
-	PORTE.DIRSET = 0x0F;
     resetReason_t reason = getResetReason();
 
 	vInitClock();
@@ -81,7 +79,7 @@ int main(void)
 	xTaskCreate(vClockct, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, &Clockct);
 	xTaskCreate(vUserInt, (const char *) "UserInt", configMINIMAL_STACK_SIZE, NULL, 2, &UserInt);
 	xTaskCreate(vAlarm, (const char *) "Alarmtsk", configMINIMAL_STACK_SIZE, NULL, 2, &Alarmct);
-	xTaskCreate(vLED,(const char *)"LEDtsk",configMINIMAL_STACK_SIZE,NULL,2,&LEDct);
+	xTaskCreate(vLED, (const char *) "LEDtsk", configMINIMAL_STACK_SIZE, NULL, 2, &LEDct);
 	vTaskSuspend(Alarmct);
 	vTaskSuspend(LEDct);
 	xButtonEvent = xEventGroupCreate();
@@ -448,6 +446,7 @@ void vUserInt(void *pvParamters)
 
 void vClockct(void *pvParameters){
 	
+	
 	(void) pvParameters;
 	
 	for (;;)
@@ -482,8 +481,7 @@ void vAlarm(void *pvpParameters){
 	
 	(void) pvpParameters;
 
-	vTaskSuspend(UserInt);
-	vTaskResume(LEDct);
+	
 	vDisplayClear();
 	vDisplayWriteStringAtPos(0,0,"ALARM!");
 	vDisplayWriteStringAtPos(1,0,"Press S1 for OFF");
@@ -492,18 +490,20 @@ void vAlarm(void *pvpParameters){
 	
 	for (;;)
 	{	
-
+		vTaskResume(LEDct);
 		
 		switch (eventbitbutton)
 		{
 			case 1:
 			vTaskResume(UserInt);
-			vTaskSuspend(Alarmct);
+			vTaskSuspend(LEDct);
+			PORTE.OUT = 0x0F;
+			PORTF.OUT = 0x0F;
+			
 			vTaskSuspend(LEDct);
 			eventbitbutton = xEventGroupClearBits(xButtonEvent,1);
 			eventbitbutton = xEventGroupGetBits(xButtonEvent);
-			PORTE.OUTCLR == 0xFF;
-			PORTF.OUTTGL == 0x00;
+			vTaskSuspend(Alarmct);
 			break;
 			case 2:
 			a_minutes = a_minutes+5;
@@ -513,12 +513,12 @@ void vAlarm(void *pvpParameters){
 				a_hours++;
 			}
 			vTaskResume(UserInt);
-			vTaskSuspend(Alarmct);
 			vTaskSuspend(LEDct);
+			PORTE.OUT = 0x0F;
+			PORTF.OUT = 0x0F;
 			eventbitbutton = xEventGroupClearBits(xButtonEvent,2);
 			eventbitbutton = xEventGroupGetBits(xButtonEvent);
-			PORTE.OUTCLR == 0x0F;
-			PORTF.OUTCLR == 0x0F;
+			vTaskSuspend(Alarmct);
 			break;
 		}
 	}
@@ -532,11 +532,15 @@ void vLED(void *pvParameters){
 		
 	PORTF.DIRSET = 0x0F;
 	PORTE.DIRSET = 0x0F;
+	PORTE.OUT = 0x0F;
+	PORTF.OUT = 0x0F;		
+
 	
 	for(;;){
 		
 		PORTF.OUTTGL = 0x0F;
 		PORTE.OUTTGL = 0x0F;
+
 		
 		vTaskDelay(100 / portTICK_RATE_MS);
 	}
