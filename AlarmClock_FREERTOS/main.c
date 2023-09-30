@@ -491,6 +491,7 @@ void vAlarm(void *pvpParameters){
 			}
 			vTaskResume(UserInt);
 			vTaskSuspend(Alarmct);
+			break;
 		}
 	}
 	
