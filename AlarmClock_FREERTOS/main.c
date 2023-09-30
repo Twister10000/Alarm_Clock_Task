@@ -28,10 +28,6 @@
 #include "NHD0420Driver.h"
 #include "ButtonHandler.h"
 
-#define BIT_0 (1 << 0)
-#define BIT_1 (1 << 1)
-#define BIT_2 (1 << 2)
-
 extern void vApplicationIdleHook( void );
 void vButtonTask(void *pvParameters);
 void vClockct(void *pvParameters);
@@ -106,7 +102,6 @@ void vUserInt(void *pvParamters){
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
 				break;
 			case 2:
-
 				s_button2 = true;
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,2);
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
@@ -270,7 +265,6 @@ void vUserInt(void *pvParamters){
 		}
 		if (UIMODE == 8)
 		{
-
 			vDisplayClear();
 			vDisplayWriteStringAtPos(0,0,"Time Settings");
 			vDisplayWriteStringAtPos(1,1,"Time: %s", Time);
@@ -281,21 +275,25 @@ void vUserInt(void *pvParamters){
 				{
 					UIMODE = 0;
 					s_button1 = false;
+					//vTaskResume(Clockct);
 				}
 				if (s_button2 == true)
 				{
 					hour = true;
 					s_button2 = false;
+					//vTaskSuspend(Clockct);
 				}
 				if (s_button3 == true)
 				{
 					minute = true;
 					s_button3 = false;
+					//vTaskSuspend(Clockct);
 				}
 				if (s_button4 == true)
 				{
 					second = true;
 					s_button4 = false;
+					//vTaskSuspend(Clockct);
 				}
 			}
 			if (hour == true)
