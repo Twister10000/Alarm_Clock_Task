@@ -531,16 +531,11 @@ void vLED(void *pvParameters){
 	(void ) pvParameters;
 		
 	PORTF.DIRSET = 0x0F;
-	PORTE.DIRSET = 0x0F;
-	PORTE.OUT = 0x0F;
-	PORTF.OUT = 0x0F;		
-
-	
+	PORTE.DIRSET = 0x0F;	
 	for(;;){
 		
 		PORTF.OUTTGL = 0x0F;
 		PORTE.OUTTGL = 0x0F;
-
 		
 		vTaskDelay(100 / portTICK_RATE_MS);
 	}
