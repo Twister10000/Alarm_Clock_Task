@@ -70,8 +70,8 @@ int main(void)
 	vInitDisplay();
 	
 	xTaskCreate(vButtonTask, (const char *) "btTask", configMINIMAL_STACK_SIZE, NULL, 3, NULL);
-	xTaskCreate(vClockct, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, Clockct);
-	xTaskCreate(vUserInt, (const char *) "UserInt", configMINIMAL_STACK_SIZE, NULL, 2, UserInt);
+	xTaskCreate(vClockct, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, &Clockct);
+	xTaskCreate(vUserInt, (const char *) "UserInt", configMINIMAL_STACK_SIZE, NULL, 2, &UserInt);
 	xButtonEvent = xEventGroupCreate();
 
 	vDisplayClear();
@@ -82,7 +82,8 @@ int main(void)
 	vTaskStartScheduler();
 	return 0;
 }
-void vUserInt(void *pvParamters){
+void vUserInt(void *pvParamters)
+{
 	
 	(void) pvParamters;
 	uint8_t UIMODE = 0;
@@ -265,6 +266,8 @@ void vUserInt(void *pvParamters){
 		}
 		if (UIMODE == 8)
 		{
+			vTaskSuspend(Clockct);
+			sprintf(&Time[0], "%.2i:%.2i:%.2i", hours, minutes, seconds);
 			vDisplayClear();
 			vDisplayWriteStringAtPos(0,0,"Time Settings");
 			vDisplayWriteStringAtPos(1,1,"Time: %s", Time);
@@ -275,25 +278,22 @@ void vUserInt(void *pvParamters){
 				{
 					UIMODE = 0;
 					s_button1 = false;
-					//vTaskResume(Clockct);
+					vTaskResume(Clockct);
 				}
 				if (s_button2 == true)
 				{
 					hour = true;
 					s_button2 = false;
-					//vTaskSuspend(Clockct);
 				}
 				if (s_button3 == true)
 				{
 					minute = true;
 					s_button3 = false;
-					//vTaskSuspend(Clockct);
 				}
 				if (s_button4 == true)
 				{
 					second = true;
 					s_button4 = false;
-					//vTaskSuspend(Clockct);
 				}
 			}
 			if (hour == true)
@@ -388,8 +388,7 @@ void vUserInt(void *pvParamters){
 				{
 					seconds = 0;
 				}
-		}
-			
+			}	
 		}
 		if(UIMODE == 0){
 			if (s_button2 == true)
