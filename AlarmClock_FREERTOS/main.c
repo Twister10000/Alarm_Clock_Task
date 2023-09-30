@@ -155,18 +155,22 @@ void vUserInt(void *pvParamters){
 				if (s_button1 == true)
 				{
 					UIMODE = 0;
+					s_button1 = false;
 				}
 				if (s_button2 == true)
 				{
 					hour = true;
+					s_button2 = false;
 				}
 				if (s_button3 == true)
 				{
 					minute = true;
+					s_button3 = false;
 				}
 				if (s_button4 == true)
 				{
 					second = true;
+					s_button4 = false;
 				}
 			}
 			if (hour == true)
@@ -264,30 +268,130 @@ void vUserInt(void *pvParamters){
 				
 			}
 		}
-		if (UIMODE == 8){
-			
+		if (UIMODE == 8)
+		{
+
 			vDisplayClear();
 			vDisplayWriteStringAtPos(0,0,"Time Settings");
 			vDisplayWriteStringAtPos(1,1,"Time: %s", Time);
 			vDisplayWriteStringAtPos(3,0,"S1:B S2:h S3:m S4:s");
-			//vTaskSuspend(Clockct);
-			if (s_button1 == true)
+			if (hour == false && minute == false && second == false)
 			{
-				UIMODE = 0;
+				if (s_button1 == true)
+				{
+					UIMODE = 0;
+					s_button1 = false;
+				}
+				if (s_button2 == true)
+				{
+					hour = true;
+					s_button2 = false;
+				}
+				if (s_button3 == true)
+				{
+					minute = true;
+					s_button3 = false;
+				}
+				if (s_button4 == true)
+				{
+					second = true;
+					s_button4 = false;
+				}
 			}
-			if (s_button2 == true)
+			if (hour == true)
 			{
-				hours++;	
+				vDisplayWriteStringAtPos(2,0, "S2:-1 S2_Long:-10");
+				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10   ");
+				
+				if (s_button1 == true)
+				{
+					hour = false;
+					s_button1 = false;
+				}
+				if (s_button2 == true)
+				{
+					hours--;
+				}
+				if (l_button2 == true)
+				{
+					hours = hours-10;
+				}
+				if (s_button3 == true)
+				{
+					hours++;
+				}
+				if (l_button3 == true)
+				{
+					hours = hours+10;
+				}
+				if (hours >= 24)
+				{
+					hours = 0;
+				}
 			}
-			if (s_button3 == true)
+			if (minute == true)
 			{
-				minutes++;
+				vDisplayWriteStringAtPos(2,0, "S2:-1 S2_Long:-10");
+				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10   ");
+				
+				if (s_button1 == true)
+				{
+					minute = false;
+					s_button1 = false;
+				}
+				if (s_button2 == true)
+				{
+					minutes--;
+				}
+				if (l_button2 == true)
+				{
+					minutes = minutes-10;
+				}
+				if (s_button3 == true)
+				{
+					minutes++;
+				}
+				if (l_button3 == true)
+				{
+					minutes = minutes+10;
+				}
+				if (minutes >= 60)
+				{
+					minutes = 0;
+				}
 			}
-			if (s_button4 == true)
+			if (second == true)
 			{
-				seconds++;
-			}
-			//vTaskResume(Clockct);
+				vDisplayWriteStringAtPos(2,0, "S2:-1 S2_Long:-10");
+				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10   ");
+				
+				if (s_button1 == true)
+				{
+					second = false;
+					s_button1 = false;
+				}
+				if (s_button2 == true)
+				{
+					seconds--;
+				}
+				if (l_button2 == true)
+				{
+					seconds = seconds-10;
+				}
+				if (s_button3 == true)
+				{
+					seconds++;
+				}
+				if (l_button3 == true)
+				{
+					seconds = seconds+10;
+				}
+				if (seconds >= 60)
+				{
+					seconds = 0;
+				}
+		}
+			
 		}
 		if(UIMODE == 0){
 			if (s_button2 == true)
