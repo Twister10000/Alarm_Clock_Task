@@ -150,31 +150,34 @@ void vUserInt(void *pvParamters){
 			vDisplayWriteStringAtPos(0,0,"Alarm Settings");
 			vDisplayWriteStringAtPos(1,1,"Alarm: %s", A_Time);
 			vDisplayWriteStringAtPos(3,0,"S1:B S2:h S3:m S4:s");
-			if (s_button1 == true)
+			if (hour == false && minute == false && second == false)
 			{
-				UIMODE = 0;
-			}
-			if (s_button2 == true)
-			{
-				hour = true;
-			}
-			if (s_button3 == true)
-			{
-				minute = true;
-			}
-			if (s_button4 == true)
-			{
-				second = true;
+				if (s_button1 == true)
+				{
+					UIMODE = 0;
+				}
+				if (s_button2 == true)
+				{
+					hour = true;
+				}
+				if (s_button3 == true)
+				{
+					minute = true;
+				}
+				if (s_button4 == true)
+				{
+					second = true;
+				}
 			}
 			if (hour == true)
 			{				
 				vDisplayWriteStringAtPos(2,0, "S2:-1 S2_Long:-10");
 				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10");
 				
-				if (l_button1 == true)
+				if (s_button1 == true)
 				{
 					hour = false;
-					l_button1 = false;
+					s_button1 = false;
 				}
 				if (s_button2 == true)
 				{
@@ -192,7 +195,7 @@ void vUserInt(void *pvParamters){
 				{
 					a_hours = a_hours+10;
 				}
-			}
+			}/*
 			if (minute == true)
 			{				
 				vDisplayWriteStringAtPos(2,0, "S2:-1 S2_Long:-10");
@@ -202,7 +205,7 @@ void vUserInt(void *pvParamters){
 			{
 				vDisplayWriteStringAtPos(2,0, "S2:-1 S2_Long:-10");
 				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10");
-			}
+			}*/
 		}
 		if (UIMODE == 8){
 			
