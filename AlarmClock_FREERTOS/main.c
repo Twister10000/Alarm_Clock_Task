@@ -33,12 +33,16 @@ void vButtonTask(void *pvParameters);
 void vClockct(void *pvParameters);
 void vUserInt(void *pvParameters);
 void vAlarm(void *pvpParameters);
+void vLED(void *pvParameters);
 
 TaskHandle_t UserInt;
 TaskHandle_t Clockct;
 TaskHandle_t Alarmct;
+TaskHandle_t LEDct;
 EventGroupHandle_t xButtonEvent;
 EventBits_t eventbitbutton;
+
+
 
 char Time[16];	
 uint8_t seconds = 0;
@@ -66,6 +70,8 @@ void vApplicationIdleHook( void )
 int main(void)
 {
 
+	PORTF.DIRSET = 0x0F;
+	PORTE.DIRSET = 0x0F;
     resetReason_t reason = getResetReason();
 
 	vInitClock();
@@ -75,7 +81,9 @@ int main(void)
 	xTaskCreate(vClockct, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, &Clockct);
 	xTaskCreate(vUserInt, (const char *) "UserInt", configMINIMAL_STACK_SIZE, NULL, 2, &UserInt);
 	xTaskCreate(vAlarm, (const char *) "Alarmtsk", configMINIMAL_STACK_SIZE, NULL, 2, &Alarmct);
+	xTaskCreate(vLED,(const char *)"LEDtsk",configMINIMAL_STACK_SIZE,NULL,2,&LEDct);
 	vTaskSuspend(Alarmct);
+	vTaskSuspend(LEDct);
 	xButtonEvent = xEventGroupCreate();
 
 	vDisplayClear();
@@ -459,7 +467,11 @@ void vClockct(void *pvParameters){
 		{
 			hours = 0;
 		}
-		
+		if (hours == a_hours && minutes == a_minutes && seconds == a_seconds)
+		{
+			vTaskSuspend(UserInt);
+			vTaskResume(Alarmct);
+		}
 		sprintf(&Time[0], "%.2i:%.2i:%.2i", hours, minutes, seconds);
 		sprintf(&A_Time[0], "%.2i:%.2i:%.2i", a_hours, a_minutes, a_seconds);
 		vTaskDelay(1000/portTICK_RATE_MS);
@@ -469,32 +481,65 @@ void vClockct(void *pvParameters){
 void vAlarm(void *pvpParameters){
 	
 	(void) pvpParameters;
+
 	vTaskSuspend(UserInt);
+	vTaskResume(LEDct);
 	vDisplayClear();
 	vDisplayWriteStringAtPos(0,0,"ALARM!");
 	vDisplayWriteStringAtPos(1,0,"Press S1 for OFF");
 	vDisplayWriteStringAtPos(2,0,"Press S2 for Sleep");
 	
+	
 	for (;;)
-	{
+	{	
+
+		
 		switch (eventbitbutton)
 		{
 			case 1:
 			vTaskResume(UserInt);
 			vTaskSuspend(Alarmct);
+			vTaskSuspend(LEDct);
+			eventbitbutton = xEventGroupClearBits(xButtonEvent,1);
+			eventbitbutton = xEventGroupGetBits(xButtonEvent);
+			PORTE.OUTCLR == 0xFF;
+			PORTF.OUTTGL == 0x00;
 			break;
 			case 2:
 			a_minutes = a_minutes+5;
 			if (a_minutes >=61)
 			{
 				a_minutes = a_minutes-60;
+				a_hours++;
 			}
 			vTaskResume(UserInt);
 			vTaskSuspend(Alarmct);
+			vTaskSuspend(LEDct);
+			eventbitbutton = xEventGroupClearBits(xButtonEvent,2);
+			eventbitbutton = xEventGroupGetBits(xButtonEvent);
+			PORTE.OUTCLR == 0x0F;
+			PORTF.OUTCLR == 0x0F;
 			break;
 		}
 	}
 	
+	
+}
+
+void vLED(void *pvParameters){
+		
+	(void ) pvParameters;
+		
+	PORTF.DIRSET = 0x0F;
+	PORTE.DIRSET = 0x0F;
+	
+	for(;;){
+		
+		PORTF.OUTTGL = 0x0F;
+		PORTE.OUTTGL = 0x0F;
+		
+		vTaskDelay(100 / portTICK_RATE_MS);
+	}
 	
 }
 
