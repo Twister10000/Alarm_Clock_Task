@@ -126,6 +126,11 @@ void vUserInt(void *pvParamters){
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,11);
 				eventbitbutton = xEventGroupGetBits(xButtonEvent);
 				break;
+			case 22:
+				l_button2 = true;
+				eventbitbutton = xEventGroupClearBits(xButtonEvent,22);
+				eventbitbutton = xEventGroupGetBits(xButtonEvent);
+				break;
 			case 33:
 				l_button3 = true;				
 				eventbitbutton = xEventGroupClearBits(xButtonEvent,33);
@@ -145,7 +150,6 @@ void vUserInt(void *pvParamters){
 			vDisplayWriteStringAtPos(0,0,"Alarm Settings");
 			vDisplayWriteStringAtPos(1,1,"Alarm: %s", A_Time);
 			vDisplayWriteStringAtPos(3,0,"S1:B S2:h S3:m S4:s");
-			//vTaskSuspend(Clockct);
 			if (s_button1 == true)
 			{
 				UIMODE = 0;
@@ -167,10 +171,10 @@ void vUserInt(void *pvParamters){
 				vDisplayWriteStringAtPos(2,0, "S2:-1 S2_Long:-10");
 				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10");
 				
-				if (s_button1 == true)
+				if (l_button1 == true)
 				{
 					hour = false;
-					s_button1 = false;
+					l_button1 = false;
 				}
 				if (s_button2 == true)
 				{
@@ -178,7 +182,7 @@ void vUserInt(void *pvParamters){
 				}
 				if (l_button2 == true)
 				{
-					a_hours = a_hours -10;
+					a_hours = a_hours-10;
 				}
 				if (s_button3 == true)
 				{
@@ -199,7 +203,6 @@ void vUserInt(void *pvParamters){
 				vDisplayWriteStringAtPos(2,0, "S2:-1 S2_Long:-10");
 				vDisplayWriteStringAtPos(3,0,"S3:+1 S3_Long:+10");
 			}
-
 		}
 		if (UIMODE == 8){
 			
@@ -318,6 +321,10 @@ void vButtonTask(void *pvParameters){
 		if (getButtonPress(BUTTON2) == SHORT_PRESSED)
 		{
 			eventbitbutton = xEventGroupSetBits(xButtonEvent,2);
+		}
+		if (getButtonPress(BUTTON2) == LONG_PRESSED)
+		{
+			eventbitbutton = xEventGroupSetBits(xButtonEvent,22);
 		}
 		if (getButtonPress(BUTTON3) == SHORT_PRESSED)
 		{
