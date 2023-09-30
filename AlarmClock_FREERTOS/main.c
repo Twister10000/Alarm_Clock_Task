@@ -75,6 +75,7 @@ int main(void)
 	xTaskCreate(vClockct, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, &Clockct);
 	xTaskCreate(vUserInt, (const char *) "UserInt", configMINIMAL_STACK_SIZE, NULL, 2, &UserInt);
 	xTaskCreate(vAlarm, (const char *) "Alarmtsk", configMINIMAL_STACK_SIZE, NULL, 2, &Alarmct);
+	vTaskSuspend(Alarmct);
 	xButtonEvent = xEventGroupCreate();
 
 	vDisplayClear();
