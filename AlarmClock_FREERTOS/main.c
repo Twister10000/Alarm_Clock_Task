@@ -32,9 +32,11 @@ extern void vApplicationIdleHook( void );
 void vButtonTask(void *pvParameters);
 void vClockct(void *pvParameters);
 void vUserInt(void *pvParameters);
+void vAlarm(void *pvpParameters);
 
 TaskHandle_t UserInt;
 TaskHandle_t Clockct;
+TaskHandle_t Alarmct;
 EventGroupHandle_t xButtonEvent;
 EventBits_t eventbitbutton;
 
@@ -72,6 +74,7 @@ int main(void)
 	xTaskCreate(vButtonTask, (const char *) "btTask", configMINIMAL_STACK_SIZE, NULL, 3, NULL);
 	xTaskCreate(vClockct, (const char *) "Clockct", configMINIMAL_STACK_SIZE, NULL, 2, &Clockct);
 	xTaskCreate(vUserInt, (const char *) "UserInt", configMINIMAL_STACK_SIZE, NULL, 2, &UserInt);
+	xTaskCreate(vAlarm, (const char *) "Alarmtsk", configMINIMAL_STACK_SIZE, NULL, 2, &Alarmct);
 	xButtonEvent = xEventGroupCreate();
 
 	vDisplayClear();
@@ -460,6 +463,11 @@ void vClockct(void *pvParameters){
 		sprintf(&A_Time[0], "%.2i:%.2i:%.2i", a_hours, a_minutes, a_seconds);
 		vTaskDelay(1000/portTICK_RATE_MS);
 	}
+}
+
+void vAlarm(void *pvpParameters){
+	
+	(void) pvpParameters;
 }
 
 void vButtonTask(void *pvParameters){
