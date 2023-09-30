@@ -469,12 +469,39 @@ void vClockct(void *pvParameters){
 void vAlarm(void *pvpParameters){
 	
 	(void) pvpParameters;
+	vTaskSuspend(UserInt);
+	vDisplayClear();
+	vDisplayWriteStringAtPos(0,0,"ALARM!");
+	vDisplayWriteStringAtPos(1,0,"Press S1 for OFF");
+	vDisplayWriteStringAtPos(2,0,"Press S2 for Sleep");
+	
+	for (;;)
+	{
+		switch (eventbitbutton)
+		{
+			case 1:
+			vTaskResume(UserInt);
+			vTaskSuspend(Alarmct);
+			break;
+			case 2:
+			a_minutes = a_minutes+5;
+			if (a_minutes >=61)
+			{
+				a_minutes = a_minutes-60;
+			}
+			vTaskResume(UserInt);
+			vTaskSuspend(Alarmct);
+		}
+	}
+	
+	
 }
 
 void vButtonTask(void *pvParameters){
 	
 	(void) pvParameters;
 	initButtons();
+	
 	
 	for (;;)
 	{
