@@ -52,7 +52,8 @@ char A_Time[16];
 uint8_t a_seconds = 0;
 uint8_t a_minutes = 0;
 uint8_t a_hours = 0;
-
+int8_t Alarm = 1;
+	
 bool s_button1 = false;
 bool s_button2 = false;
 bool s_button3 = false;
@@ -97,7 +98,6 @@ void vUserInt(void *pvParamters)
 	
 	(void) pvParamters;
 	uint8_t UIMODE = 0;
-	int8_t Alarm = 1;
 	bool hour = false;
 	bool minute = false;
 	bool second = false;
@@ -466,7 +466,7 @@ void vClockct(void *pvParameters){
 		{
 			hours = 0;
 		}
-		if (hours == a_hours && minutes == a_minutes && seconds == a_seconds)
+		if (hours == a_hours && minutes == a_minutes && seconds == a_seconds && Alarm == 1)
 		{
 			vTaskSuspend(UserInt);
 			vTaskResume(Alarmct);
