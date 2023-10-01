@@ -521,6 +521,7 @@ void vAlarm(void *pvpParameters){
 			vTaskSuspend(Alarmct);
 			break;
 		}
+		vTaskDelay(200/ portTICK_RATE_MS);
 	}
 	
 	
