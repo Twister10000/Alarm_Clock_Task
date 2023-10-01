@@ -470,6 +470,7 @@ void vClockct(void *pvParameters){
 		{
 			vTaskSuspend(UserInt);
 			vTaskResume(Alarmct);
+			vTaskResume(LEDct);
 		}
 		sprintf(&Time[0], "%.2i:%.2i:%.2i", hours, minutes, seconds);
 		sprintf(&A_Time[0], "%.2i:%.2i:%.2i", a_hours, a_minutes, a_seconds);
@@ -481,31 +482,27 @@ void vAlarm(void *pvpParameters){
 	
 	(void) pvpParameters;
 
-	
-	vDisplayClear();
-	vDisplayWriteStringAtPos(0,0,"ALARM!");
-	vDisplayWriteStringAtPos(1,0,"Press S1 for OFF");
-	vDisplayWriteStringAtPos(2,0,"Press S2 for Sleep");
-	
-	
 	for (;;)
 	{	
-		vTaskResume(LEDct);
+		vDisplayClear();
+		vDisplayWriteStringAtPos(0,0,"ALARM!");
+		vDisplayWriteStringAtPos(1,0,"Press S1 for OFF");
+		vDisplayWriteStringAtPos(2,0,"Press S2 for Sleep");
 		
 		switch (eventbitbutton)
 		{
 			case 1:
-			vTaskResume(UserInt);
 			vTaskSuspend(LEDct);
 			PORTE.OUT = 0x0F;
 			PORTF.OUT = 0x0F;
-			
-			vTaskSuspend(LEDct);
 			eventbitbutton = xEventGroupClearBits(xButtonEvent,1);
 			eventbitbutton = xEventGroupGetBits(xButtonEvent);
+			vTaskResume(UserInt);
 			vTaskSuspend(Alarmct);
 			break;
 			case 2:
+			eventbitbutton = xEventGroupClearBits(xButtonEvent,2);
+			eventbitbutton = xEventGroupGetBits(xButtonEvent);
 			a_minutes = a_minutes+5;
 			if (a_minutes >=61)
 			{
@@ -516,8 +513,7 @@ void vAlarm(void *pvpParameters){
 			vTaskSuspend(LEDct);
 			PORTE.OUT = 0x0F;
 			PORTF.OUT = 0x0F;
-			eventbitbutton = xEventGroupClearBits(xButtonEvent,2);
-			eventbitbutton = xEventGroupGetBits(xButtonEvent);
+
 			vTaskSuspend(Alarmct);
 			break;
 		}
